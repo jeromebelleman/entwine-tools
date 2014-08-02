@@ -14,7 +14,7 @@ def photos(params):
     except OSError:
         pass
     for entry in os.listdir('.'):
-        if entry.endswith('.jpg'):
+        if entry.lower().endswith('.jpg'):
             subprocess.call(['gm', 'convert', '-resize', 'x64', entry,
                              'thumbnails/' + entry])
             print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
