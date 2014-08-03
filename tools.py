@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def photos(params):
+def photos(params, start=0, stop=None, size=64):
     params['styles'] = '''
        img {
            border: thin solid;
@@ -9,15 +9,25 @@ def photos(params):
        }
     '''
 
+    # Create thumbnails directory
     try:
         os.mkdir('thumbnails')
     except OSError:
         pass
-    for entry in os.listdir('.'):
-        if entry.lower().endswith('.jpg'):
-            path = 'thumbnails/' + entry
+
+    # Make entries
+    def mkentry(entry):
+        path = 'thumbnails/' + entry
+        try:
             if os.stat(entry).st_mtime > os.stat(path).st_mtime:
-                subprocess.call(['gm', 'convert', '-resize', 'x64',
-                                 entry, path])
-            print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
+                raise OSError
+        except OSError:
+            subprocess.call(['gm', 'convert', '-resize', 'x' + str(size),
+                             entry, path])
+        print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
+
+    entries = [entry for entry in os.listdir('.')
+               if entry.lower().endswith('.jpg')]
+    for entry in entries[start:stop]:
+        mkentry(entry)
 
