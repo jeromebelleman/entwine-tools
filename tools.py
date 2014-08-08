@@ -1,5 +1,8 @@
 import os
 import subprocess
+import datetime
+
+DATEFMT = '%d %b %Y'
 
 def photos(params, start=0, stop=None, size=64, details=False):
     params['styles'] = '''
@@ -25,12 +28,15 @@ def photos(params, start=0, stop=None, size=64, details=False):
             subprocess.call(['gm', 'convert', '-resize', 'x' + str(size),
                              entry, path])
         if details:
-            filesize = os.stat(entry).st_size / 1024
-            proc = subprocess.Popen(['file', entry], stdout=subprocess.PIPE)
+            mtime = datetime.datetime.fromtimestamp(os.stat(entry).st_mtime)
+            proc = subprocess.Popen(['identify', entry], stdout=subprocess.PIPE)
             filetype, _ = proc.communicate()
+            filetype = filetype.strip().replace(' ', '<br />', 1)
+
             row = '<tr><td>[![%s](thumbnails/%s)](%s)</td>'
-            row += '<td>%s, %s kB</td></tr>'
-            print row % ((entry,) * 3 + (filetype.strip(), filesize))
+            row += '<td>%s<br />%s</td></tr>'
+            print row % ((entry,) * 3 + \
+                (filetype, mtime.strftime(DATEFMT)))
         else:
             print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
 
