@@ -27,7 +27,8 @@ def photos(params, start=0, stop=None, size=64):
         print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
 
     entries = [entry for entry in os.listdir('.')
-               if entry.lower().endswith('.jpg')]
+               if entry.lower().endswith('.jpg') or
+               entry.lower().endswith('.png')]
     for entry in entries[start:stop]:
         mkentry(entry)
 
