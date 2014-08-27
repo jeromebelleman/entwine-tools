@@ -5,6 +5,10 @@ import datetime
 DATEFMT = '%d %b %Y'
 
 def photos(params, start=0, stop=None, size=64, details=False):
+    '''
+    Write photo gallery
+    '''
+
     params['styles'] = '''
        img {
            border: thin solid;
@@ -20,6 +24,10 @@ def photos(params, start=0, stop=None, size=64, details=False):
 
     # Make entries
     def mkentry(entry, details):
+        '''
+        Make an entry for a photo
+        '''
+
         path = 'thumbnails/' + entry
         try:
             if os.stat(entry).st_mtime > os.stat(path).st_mtime:
