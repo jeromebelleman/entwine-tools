@@ -48,9 +48,9 @@ def photos(params, start=0, stop=None, size=64, details=False):
         else:
             print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
 
-    entries = [entry for entry in os.listdir('.')
+    entries = sorted([entry for entry in os.listdir('.')
                if entry.lower().endswith('.jpg') or
-               entry.lower().endswith('.png')]
+               entry.lower().endswith('.png')])
 
     if details:
         print '<table>'
