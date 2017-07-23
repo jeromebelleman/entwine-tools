@@ -1,6 +1,7 @@
 import os
 import subprocess
 import datetime
+import entwine
 
 DATEFMT = '%d %b %Y'
 
@@ -30,13 +31,13 @@ def photos(params, start=0, stop=None, size=64, details=False):
 
         path = 'thumbnails/' + entry
         try:
-            if os.stat(entry).st_mtime > os.stat(path).st_mtime:
+            if entwine.getmtime(entry) > entwine.getmtime(path):
                 raise OSError
         except OSError:
             subprocess.call(['gm', 'convert', '-resize', 'x' + str(size),
                              entry, path])
         if details:
-            mtime = datetime.datetime.fromtimestamp(os.stat(entry).st_mtime)
+            mtime = datetime.datetime.fromtimestamp(entwine.getmtime(entry))
             proc = subprocess.Popen(['identify', entry], stdout=subprocess.PIPE)
             filetype, _ = proc.communicate()
             filetype = filetype.strip().replace(' ', '<br />', 1)
