@@ -5,59 +5,53 @@ import entwine
 
 DATEFMT = '%d %b %Y'
 
-def photos(params, start=0, stop=None, size=64, details=False):
+def photos(outdir, start=0, stop=None, size=64, details=False):
     '''
     Write photo gallery
     '''
 
-    params['styles'] = '''
-       img {
-           border: thin solid;
-           padding: 2px;
-       }
-    '''
-
     # Create thumbnails directory
     try:
-        os.mkdir('thumbnails')
+        os.mkdir(outdir + '/thumbnails')
     except OSError:
         pass
 
     # Make entries
-    def mkentry(entry, details):
+    def mkentry(filename, details):
         '''
         Make an entry for a photo
         '''
 
-        path = 'thumbnails/' + entry
+        outfile = outdir + '/thumbnails/' + filename
         try:
-            if entwine.getmtime(entry) > entwine.getmtime(path):
+            if entwine.getmtime(filename) > entwine.getmtime(outfile):
                 raise OSError
         except OSError:
             subprocess.call(['gm', 'convert', '-resize', 'x' + str(size),
-                             entry, path])
+                             filename, outfile])
         if details:
-            mtime = datetime.datetime.fromtimestamp(entwine.getmtime(entry))
-            proc = subprocess.Popen(['identify', entry], stdout=subprocess.PIPE)
+            mtime = datetime.datetime.fromtimestamp(entwine.getmtime(filename))
+            proc = subprocess.Popen(['identify', filename],
+                                    stdout=subprocess.PIPE)
             filetype, _ = proc.communicate()
             filetype = filetype.strip().replace(' ', '<br />', 1)
 
             row = '<tr><td>[![%s](thumbnails/%s)](%s)</td>'
             row += '<td>%s<br />%s</td></tr>'
-            print row % ((entry,) * 3 + \
+            print row % ((filename,) * 3 + \
                 (filetype, mtime.strftime(DATEFMT)))
         else:
-            print '[![%s](thumbnails/%s)](%s)' % ((entry,) * 3)
+            print '[![%s](thumbnails/%s)](%s)' % ((filename,) * 3)
 
-    entries = sorted([entry for entry in os.listdir('.')
-                      if entry.lower().endswith('.jpg') or
-                      entry.lower().endswith('.png')])
+    filenames = sorted([entry for entry in os.listdir('.')
+                        if entry.lower().endswith('.jpg') or
+                        entry.lower().endswith('.png')])
 
     if details:
         print '<table>'
 
-    for entry in entries[start:stop]:
-        mkentry(entry, details)
+    for filename in filenames[start:stop]:
+        mkentry(filename, details)
 
     if details:
         print '</table>'
