@@ -49,10 +49,14 @@ def photos(outdir, start=0, stop=None, size=64, details=False):
 
     if details:
         print '<table>'
+    else:
+        print '<div class="photos">'
 
     for filename in filenames[start:stop]:
         mkentry(filename, details)
 
     if details:
         print '</table>'
+    else:
+        print '</div>'
 
