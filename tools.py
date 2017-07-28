@@ -60,3 +60,10 @@ def photos(outdir, start=0, stop=None, size=64, details=False):
     else:
         print '</div>'
 
+def include(path):
+    '''
+    Include file contents
+    '''
+
+    with open(path) as fhl:
+        print fhl.read()
