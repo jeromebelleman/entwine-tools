@@ -101,3 +101,10 @@ def ganalytics(dev, trackingid):
   ga('create', '%s', 'auto');
   ga('send', 'pageview');
   </script>''' % trackingid
+
+def key(keystroke):
+    '''
+    Print keystroke
+    '''
+
+    print '<span class="key">%s</span>' % keystroke
