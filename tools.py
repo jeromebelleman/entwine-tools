@@ -108,3 +108,10 @@ def key(keystroke):
     '''
 
     print '<span class="key">%s</span>' % keystroke
+
+def latex():
+    '''
+    Typeset the LaTeX logo
+    '''
+
+    print '<span style="font-size:1em;">L<sup style="font-size:0.85em;vertical-align:0.15em;margin-left:-0.36em;margin-right:-0.15em;">A</sup></span><span style="font-size:1em;">T<sub style="vertical-align:-0.5ex;margin-left:-0.1667em;margin-right:-0.125em;">E</sub>X</span>'
