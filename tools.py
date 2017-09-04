@@ -77,13 +77,16 @@ def indexposts():
 
     for doc in os.listdir('.'):
         if os.path.isdir(doc):
-            meta, _ = entwinelib.loadmd(doc + '/index.md')
-            print '<div>'
-            print '<a href="%s">%s</a><br>' % (doc, meta['title'])
-            print '<span class="date">%s</span><br>' % \
-              meta['date'].strftime('%-d %b %Y')
-            print meta['description']
-            print '</div>'
+            try:
+                meta, _ = entwinelib.loadmd(doc + '/index.md')
+                print '<div>'
+                print '<a href="%s">%s</a><br>' % (doc, meta['title'])
+                print '<span class="date">%s</span><br>' % \
+                  meta['date'].strftime('%-d %b %Y')
+                print meta['description']
+                print '</div>'
+            except IOError:
+                pass
 
 def ganalytics(dev, trackingid):
     '''
