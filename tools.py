@@ -125,3 +125,25 @@ def latex():
     '''
 
     print '<span style="font-size:1em;">L<sup style="font-size:0.85em;vertical-align:0.15em;margin-left:-0.36em;margin-right:-0.15em;">A</sup></span><span style="font-size:1em;">T<sub style="vertical-align:-0.5ex;margin-left:-0.1667em;margin-right:-0.125em;">E</sub>X</span>'
+
+def disqus(username, path):
+    '''
+    Insert Disqus
+    '''
+
+    print '''\
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = '%s';
+this.page.identifier = '%s';
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://%s.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>''' % (path, path, username)

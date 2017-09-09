@@ -12,3 +12,12 @@
 
 `key(keystroke)`
 :   Print keystroke
+
+`tex()`
+:   Typeset the TeX logo
+
+`latex()`
+:   Typeset the LaTeX logo
+
+`disqus(username, path)`
+:   Insert Disqus
